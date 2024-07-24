@@ -43,8 +43,18 @@ class Scraping:
         row_zero = output[0].tbody.find_all("tr")[0]
         date = row_zero.find_all("td")[0].text
         revenue = float(row_zero.find_all("td")[1].text.strip().replace("B",""))
+
         df.loc[0] = [date, revenue]
-        print(revenue)
+        temp_list = []
+        for row in output[0].tbody.find_all("tr"):
+            date = row.find_all("td")[0].text
+            revenue = float(row.find_all("td")[1].text.strip().replace("B",""))
+            temp_list.append([date,revenue])
+        
+        scraped_data_df = pd.DataFrame(temp_list,columns = ["Date", "Revenue"])
+        print(scraped_data_df)
+        
+    
 
 sc = Scraping(resource_url, headers)
 sc.download()
