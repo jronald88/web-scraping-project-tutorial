@@ -52,11 +52,19 @@ class Scraping:
             temp_list.append([date,revenue])
         
         scraped_data_df = pd.DataFrame(temp_list,columns = ["Date", "Revenue"])
-        print(scraped_data_df)
+       # print(scraped_data_df)
+        return scraped_data_df
         
-    
+comm = sqlite3.connect("Revenue.db")
+comm.execute("""DROP TABLE Revenue;""")
+comm.execute("""CREATE TABLE Revenue (Date, Revenue);""")
+
+
 
 sc = Scraping(resource_url, headers)
 sc.download()
 sc.display_html()
-sc.parse_html()
+scraped_data_df = sc.parse_html()
+
+for l in scraped_data_df.items():
+    print(l["Date"])
