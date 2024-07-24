@@ -46,8 +46,6 @@ class Scraping:
         df.loc[0] = [date, revenue]
         print(revenue)
 
-
-
 sc = Scraping(resource_url, headers)
 sc.download()
 sc.display_html()
