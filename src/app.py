@@ -59,12 +59,24 @@ comm = sqlite3.connect("Revenue.db")
 comm.execute("""DROP TABLE Revenue;""")
 comm.execute("""CREATE TABLE Revenue (Date, Revenue);""")
 
-
-
 sc = Scraping(resource_url, headers)
 sc.download()
 sc.display_html()
 scraped_data_df = sc.parse_html()
+df = pd.DataFrame()
 
-for l in scraped_data_df.items():
-    print(l["Date"])
+for index, row in scraped_data_df.iterrows():
+    date = row["Date"]
+    revenue = row["Revenue"]
+
+    print(date)  # Access data using column names
+    print(revenue)
+
+print(scraped_data_df)
+
+
+tesla_tuples = list(scraped_data_df.to_records(index = False))
+tesla_tuples[:5]
+
+comm.executemany("INSERT INTO revenue VALUES (?,?)", tesla_tuples)
+comm.commit()
