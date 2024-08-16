@@ -35,6 +35,7 @@ class Scraping:
         pass
 
 
+    
     def parse_html(self):
 
         df = pd.DataFrame(columns=["Date", "Revenue"])
@@ -46,14 +47,15 @@ class Scraping:
 
         df.loc[0] = [date, revenue]
         temp_list = []
-        temp_list_2 = []
+
+    
+
         for el in range(2):
             for row in output[el].tbody.find_all("tr"):
                 date = row.find_all("td")[0].text
                 revenue = row.find_all("td")[1].text.strip()
                 temp_list.append([date,revenue])
         scraped_data_df = pd.DataFrame(temp_list,columns = ["Date", "Revenue"])
-                            
         return scraped_data_df
         
 comm = sqlite3.connect("Revenue.db")
